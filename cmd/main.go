@@ -35,7 +35,6 @@ func main() {
 	}
 	zapLogger.Info("the following configuration is read",
 		zap.String("AddressServer", cfg.Address),
-		zap.String("AccrualAddress", cfg.AccrualAddress),
 		zap.Bool("ReleaseMOD", cfg.ReleaseMOD),
 	)
 	zapLogger.Debug("full configuration", zap.Any("config", cfg))
