@@ -144,3 +144,44 @@ func (PS *PgStorage) UpdateTaskStatus(ctx context.Context, taskId int64, statusI
 	_, err := PS.connect.ExecContext(ctx, `UPDATE tasks SET statusid = $1 WHERE id = $2;`, statusId, taskId)
 	return err
 }
+
+func (PS *PgStorage) GetAllStatuses(ctx context.Context) ([]models.Status, error) {
+	rows, err := PS.connect.QueryContext(ctx, `SELECT id, "nameStatus" FROM public.status;`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var statuses []models.Status
+	for rows.Next() {
+		var status models.Status
+		err := rows.Scan(&status.Id, &status.NameStatus)
+		if err != nil {
+			return nil, err
+		}
+		statuses = append(statuses, status)
+	}
+	return statuses, nil
+}
+
+func (PS *PgStorage) GetAllUsers(ctx context.Context) ([]models.Users, error) {
+	rows, err := PS.connect.QueryContext(ctx, `SELECT id, "FIO" FROM public."user";`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var userses []models.Users
+	for rows.Next() {
+		var users models.Users
+		err := rows.Scan(&users.Id, &users.FIO)
+		if err != nil {
+			return nil, err
+		}
+		userses = append(userses, users)
+	}
+	return userses, nil
+}
+
+func (PS *PgStorage) DeleteTask(ctx context.Context, taskId int64) error {
+	_, err := PS.connect.ExecContext(ctx, `DELETE FROM task WHERE id = $1;`, taskId)
+	return err
+}

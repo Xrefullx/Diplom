@@ -17,9 +17,12 @@ func Router(cfg models.Config) *gin.Engine {
 	gUser := r.Group("/api")
 	{
 		gUser.POST("/login", Login)
-		gUser.POST("/addTask", AddTask)
-		gUser.GET("/getStatus/:id", StatusTask)
+		gUser.POST("/task/add", AddTask)
+		gUser.GET("/task/status/:id", StatusTask)
 		gUser.PUT("/task/status/:id", UpdateTaskStatus)
+		gUser.GET("/status", GetAllStatuses)
+		gUser.GET("/users", GetAllUsers)
+		gUser.DELETE("/task/:id", DeleteTask)
 	}
 	return r
 }
