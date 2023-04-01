@@ -23,6 +23,7 @@ func Router(cfg models.Config) *gin.Engine {
 		gUser.GET("/status", GetAllStatuses)
 		gUser.GET("/users", GetAllUsers)
 		gUser.DELETE("/task/:id", DeleteTask)
+		gUser.PUT("/task/:id", UpdateTask)
 	}
 	return r
 }

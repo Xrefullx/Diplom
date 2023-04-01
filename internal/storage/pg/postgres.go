@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
 	"github.com/Xrefullx/Diplom/internal/models"
 	_ "github.com/lib/pq"
 )
@@ -141,7 +142,7 @@ func (PS *PgStorage) StatusTask(ctx context.Context, id int64) (models.Status, e
 }
 
 func (PS *PgStorage) UpdateTaskStatus(ctx context.Context, taskId int64, statusId int64) error {
-	_, err := PS.connect.ExecContext(ctx, `UPDATE tasks SET statusid = $1 WHERE id = $2;`, statusId, taskId)
+	_, err := PS.connect.ExecContext(ctx, `UPDATE task SET statusid = $1 WHERE id = $2;`, statusId, taskId)
 	return err
 }
 
@@ -184,4 +185,22 @@ func (PS *PgStorage) GetAllUsers(ctx context.Context) ([]models.Users, error) {
 func (PS *PgStorage) DeleteTask(ctx context.Context, taskId int64) error {
 	_, err := PS.connect.ExecContext(ctx, `DELETE FROM task WHERE id = $1;`, taskId)
 	return err
+}
+
+func (PS *PgStorage) UpdateTask(ctx context.Context, taskId string, task models.Task) error {
+	query := `UPDATE task SET title = $1, userId = $2, reasonid = $3, boardid = $4, statusid = $5, icon = $6, phone = $7, email = $8, companyname = $9 WHERE id = $10`
+	result, err := PS.connect.ExecContext(ctx, query, task.Title, task.UserId, task.ReasonId, task.BoardId, task.StatusID, task.Icon, task.Phone, task.Email, task.CompanyName, taskId)
+	if err != nil {
+		return err
+	}
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return fmt.Errorf("no rows affected, task not found")
+	}
+
+	return nil
 }
