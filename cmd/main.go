@@ -17,7 +17,6 @@ var cfg models.Config
 func init() {
 	flag.StringVar(&cfg.Address, "a", cfg.Address, "the launch address of the HTTP server")
 	flag.StringVar(&cfg.DataBaseURI, "d", cfg.DataBaseURI, "a string with the address of the database connection")
-	flag.StringVar(&cfg.AccrualAddress, "r", cfg.AccrualAddress, "address of the accrual calculation system")
 }
 func main() {
 	var zapLogger *zap.Logger

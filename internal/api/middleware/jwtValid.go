@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"fmt"
-	"github.com/Xrefullx/Diplom/internal/api/container"
 	"github.com/Xrefullx/Diplom/internal/models"
 	"github.com/dgrijalva/jwt-go/v4"
 	"github.com/gin-gonic/gin"
@@ -33,19 +32,6 @@ func JwtValid() gin.HandlerFunc {
 			return
 		}
 
-		login, err := parseToken(header[1],
-			[]byte(container.DiContainer.Get("server-config").(models.Config).SecretKey),
-		)
-		if err != nil {
-			status := http.StatusBadRequest
-			if err == auth.ErrInvalidAccessToken {
-				status = http.StatusUnauthorized
-			}
-
-			c.AbortWithStatus(status)
-			return
-		}
-		c.AddParam("loginUser", login)
 	}
 }
 
