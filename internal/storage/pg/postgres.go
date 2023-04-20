@@ -69,6 +69,7 @@ func createTables(connect *sql.DB) error {
 		"reasonId" integer,
 		"boardId" integer,
 		"statusId" integer,
+	    "problem" text,
 		icon text COLLATE pg_catalog."default",
 		phone text COLLATE pg_catalog."default",
 		email text COLLATE pg_catalog."default",
@@ -124,8 +125,8 @@ func (PS *PgStorage) Authentication(ctx context.Context, user models.User) (bool
 }
 
 func (PS *PgStorage) AddTask(ctx context.Context, task models.AddTask) error {
-	_, err := PS.connect.ExecContext(ctx, `INSERT INTO public.task(phone, title, reasonId ,email, companyname,statusId,boardId) VALUES ($1, $2, $3,$4,$5,$6,$7 )`,
-		task.SPhone, task.Title, task.ReasonID, task.Email, task.CompanyName, task.BoardId, task.StatusId)
+	_, err := PS.connect.ExecContext(ctx, `INSERT INTO public.task(phone, title, reasonId ,email, companyname,statusId,boardId,problem) VALUES ($1, $2, $3,$4,$5,$6,$7,$8 )`,
+		task.SPhone, task.Title, task.ReasonID, task.Email, task.CompanyName, task.BoardId, task.StatusId, task.Problem)
 	return err
 }
 
@@ -203,4 +204,58 @@ func (PS *PgStorage) UpdateTask(ctx context.Context, taskId string, task models.
 	}
 
 	return nil
+}
+
+func (PS *PgStorage) GetTaskInfo(ctx context.Context) ([]models.TaskInfo, error) {
+	query := `
+		SELECT public.task.id, public.task.title, "FIO", "nameReason", public.board.title, "nameStatus", icon, phone, email, companyname, problem
+		FROM public.task
+		JOIN public."user" ON public."user".id = public.task.userId
+		JOIN public."reason" ON public."reason".id = public.task.reasonid
+		JOIN public.board ON public.board.id = public.task.boardid
+		JOIN public.status ON public.status.id = public.task.statusid
+	`
+	rows, err := PS.connect.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var tasks []models.TaskInfo
+	for rows.Next() {
+		var task models.TaskInfo
+		err := rows.Scan(&task.ID, &task.TaskTitle, &task.FIO, &task.NameReason, &task.BoardTitle, &task.NameStatus, &task.Icon, &task.Phone, &task.Email, &task.CompanyName, &task.Problem)
+		if err != nil {
+			return nil, err
+		}
+		tasks = append(tasks, task)
+	}
+	return tasks, nil
+}
+
+func (PS *PgStorage) GetTaskInfoId(ctx context.Context, taskID int64) ([]models.TaskInfo, error) {
+	query := `
+		SELECT public.task.id, public.task.title, "FIO", "nameReason", public.board.title, "nameStatus", icon, phone, email, companyname, problem
+		FROM public.task
+		JOIN public."user" ON public."user".id = public.task.userId
+		JOIN public."reason" ON public."reason".id = public.task.reasonid
+		JOIN public.board ON public.board.id = public.task.boardid
+		JOIN public.status ON public.status.id = public.task.statusid
+		WHERE public.task.id = $1
+	`
+	rows, err := PS.connect.QueryContext(ctx, query, taskID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var tasks []models.TaskInfo
+	for rows.Next() {
+		var task models.TaskInfo
+		err := rows.Scan(&task.ID, &task.TaskTitle, &task.FIO, &task.NameReason, &task.BoardTitle, &task.NameStatus, &task.Icon, &task.Phone, &task.Email, &task.CompanyName, &task.Problem)
+		if err != nil {
+			return nil, err
+		}
+		tasks = append(tasks, task)
+	}
+	return tasks, nil
 }

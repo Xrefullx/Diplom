@@ -2,10 +2,12 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"github.com/Xrefullx/Diplom/internal/api/constant"
 	"github.com/Xrefullx/Diplom/internal/api/container"
 	"github.com/Xrefullx/Diplom/internal/api/handlers"
 	"github.com/Xrefullx/Diplom/internal/api/server"
+	"github.com/Xrefullx/Diplom/internal/logger"
 	"github.com/Xrefullx/Diplom/internal/models"
 	"github.com/caarlos0/env/v6"
 	"go.uber.org/zap"
@@ -41,6 +43,12 @@ func main() {
 	if err = container.BuildContainer(cfg, zapLogger); err != nil {
 		zapLogger.Fatal("error starting the Di container", zap.Error(err))
 	}
+	logger, err := logger.NewLogger("logs/app.log", 100, 30, 30, true) // Путь к файлу, размер файла (МБ), кол-во сохраненных файлов, срок хранения (дни), режим разработки
+	if err != nil {
+		panic(fmt.Sprintf("cannot create logger: %v", err))
+	}
+	defer logger.Sync()
+	zap.ReplaceGlobals(logger)
 	defer func() {
 		if err = container.GetStorage().Close(); err != nil {
 			zapLogger.Fatal(constant.ErrorWorkDataBase, zap.Error(err))

@@ -14,7 +14,7 @@ func GetAllUsers(c *gin.Context) {
 	defer cancel()
 	log := container.GetLog()
 	storage := container.GetStorage()
-	statuses, err := storage.GetAllStatuses(ctx)
+	statuses, err := storage.GetAllUsers(ctx)
 	if err != nil {
 		log.Error(constant.ErrorWorkDataBase, zap.Error(err), zap.String("func", "GetAllStatuses"))
 		c.String(http.StatusInternalServerError, constant.ErrorWorkDataBase)

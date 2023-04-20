@@ -66,4 +66,5 @@ func Login(c *gin.Context) {
 		return
 	}
 	c.Header("Authorization", "Bearer "+accessToken)
+	c.JSON(200, "Bearer "+accessToken)
 }
