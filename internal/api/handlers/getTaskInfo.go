@@ -9,18 +9,18 @@ import (
 	"net/http"
 )
 
-func GetAllUsers(c *gin.Context) {
+func GetTaskInfo(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c.Request.Context(), constant.TimeOutRequest)
 	defer cancel()
 	log := container.GetLog()
 	storage := container.GetStorage()
-	statuses, err := storage.GetAllUsers(ctx)
+	taskInfo, err := storage.GetTaskInfo(ctx)
 	if err != nil {
-		log.Error(constant.ErrorWorkDataBase, zap.Error(err), zap.String("func", "GetAllStatuses"))
+		log.Error(constant.ErrorWorkDataBase, zap.Error(err), zap.String("func", "GetTaskInfo"))
 		c.String(http.StatusInternalServerError, constant.ErrorWorkDataBase)
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"statuses": statuses,
+		"task_info": taskInfo,
 	})
 }

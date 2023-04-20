@@ -7,20 +7,27 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"net/http"
+	"strconv"
 )
 
-func GetAllUsers(c *gin.Context) {
+func GetTaskInfoId(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c.Request.Context(), constant.TimeOutRequest)
 	defer cancel()
+	idParam := c.Param("id")
+	id, err := strconv.ParseInt(idParam, 10, 64)
+	if err != nil {
+		c.String(http.StatusBadRequest, "Некорректный ID задачи")
+		return
+	}
 	log := container.GetLog()
 	storage := container.GetStorage()
-	statuses, err := storage.GetAllUsers(ctx)
+	taskInfo, err := storage.GetTaskInfoId(ctx, id)
 	if err != nil {
-		log.Error(constant.ErrorWorkDataBase, zap.Error(err), zap.String("func", "GetAllStatuses"))
+		log.Error(constant.ErrorWorkDataBase, zap.Error(err), zap.String("func", "GetTaskInfo"))
 		c.String(http.StatusInternalServerError, constant.ErrorWorkDataBase)
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"statuses": statuses,
+		"task_info": taskInfo,
 	})
 }

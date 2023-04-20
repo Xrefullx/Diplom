@@ -39,12 +39,11 @@ func AddTask(c *gin.Context) {
 		return
 	}
 	log.Debug("Новая задача добавлена успешно", zap.Any("task", task))
-	c.String(http.StatusCreated, "Новая задача добавлена успешно")
+	c.JSON(http.StatusCreated, gin.H{"id": "5"})
 	telegramToken := "6042143388:AAEbYzXYMhdsAoUQ3RsCb1T-EiyflScSxww"
 	telegramChatID := int64(-855483332)
 	notificationMessage := fmt.Sprintf("Поступила новая заявка, от компании %s. "+
-		"Номер телефона %s , "+
-		"Email %s", task.CompanyName, task.SPhone, task.Email)
+		"Номер телефона %s , "+"Email %s"+" Описание проблемы %s ", task.CompanyName, task.SPhone, task.Email, task.Problem)
 
 	if err := sendTelegramNotification(telegramToken, telegramChatID, notificationMessage); err != nil {
 		log.Error("Ошибка отправки уведомления в Telegram", zap.Error(err))
