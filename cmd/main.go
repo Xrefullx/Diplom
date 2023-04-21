@@ -10,6 +10,7 @@ import (
 	"github.com/Xrefullx/Diplom/internal/logger"
 	"github.com/Xrefullx/Diplom/internal/models"
 	"github.com/caarlos0/env/v6"
+	"github.com/joho/godotenv"
 	"go.uber.org/zap"
 	"log"
 )
@@ -23,6 +24,9 @@ func init() {
 func main() {
 	var zapLogger *zap.Logger
 	var err error
+	if err := godotenv.Load(); err != nil {
+		log.Println("No .env file found")
+	}
 	if err = env.Parse(&cfg); err != nil {
 		log.Fatalln("config reading error", zap.Error(err))
 	}

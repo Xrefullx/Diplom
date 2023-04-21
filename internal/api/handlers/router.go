@@ -8,7 +8,7 @@ import (
 
 func Router(cfg models.Config) *gin.Engine {
 	if cfg.ReleaseMOD {
-		gin.SetMode(gin.DebugMode)
+		gin.SetMode(gin.ReleaseMode)
 	}
 	r := gin.New()
 	r.Use(gin.Logger())
