@@ -1,0 +1,28 @@
+# docker-compose.yml
+version: "3.9"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile-go
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
+      - RUN_ADDRESS=${RUN_ADDRESS}
+      - DATABASE_URI=postgres://${DATABASE_URI}
+      - SECRET_KEY=${SECRET_KEY}
+      - RELEASE_MODE=${RELEASE_MODE}
+      - CHAT_ID=${CHAT_ID}
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile-postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 123qwe
+      POSTGRES_DB: diplomMaxbonus
+    ports:
+      - "5432:5432"

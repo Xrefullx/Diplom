@@ -1,0 +1,5 @@
+# Dockerfile-postgres
+# Используем официальный базовый образ Postgres
+FROM postgres:13
+# Копируем файл init.sql в директорию /docker-entrypoint-initdb.d/
+COPY init.sql /docker-entrypoint-initdb.d/
