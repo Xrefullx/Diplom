@@ -12,6 +12,8 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"go.uber.org/zap"
 	"net/http"
+	"os"
+	"strconv"
 )
 
 func AddTask(c *gin.Context) {
@@ -40,8 +42,13 @@ func AddTask(c *gin.Context) {
 	}
 	log.Debug("Новая задача добавлена успешно", zap.Any("task", task))
 	c.JSON(http.StatusCreated, gin.H{"id": "5"})
-	telegramToken := "6042143388:AAEbYzXYMhdsAoUQ3RsCb1T-EiyflScSxww"
-	telegramChatID := int64(-855483332)
+	telegramToken := os.Getenv("TELEGRAM_TOKEN")
+	telegramChatIDStr := os.Getenv("CHAT_ID")
+	telegramChatID, err := strconv.ParseInt(telegramChatIDStr, 10, 64)
+	if err != nil {
+		fmt.Println("Error converting string to int64:", err)
+		return
+	}
 	notificationMessage := fmt.Sprintf("Поступила новая заявка, от компании %s. "+
 		"Номер телефона %s , "+"Email %s"+" Описание проблемы %s ", task.CompanyName, task.SPhone, task.Email, task.Problem)
 
