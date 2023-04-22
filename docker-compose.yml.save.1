@@ -1,3 +1,4 @@
+# docker-compose.yml
 version: "3.3"
 services:
   app:
@@ -11,15 +12,10 @@ services:
     environment:
       - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
       - RUN_ADDRESS=${RUN_ADDRESS}
-      - DATABASE_URI=${DATABASE_URI}
+      - DATABASE_URI=
       - SECRET_KEY=${SECRET_KEY}
       - RELEASE_MODE=${RELEASE_MODE}
       - CHAT_ID=${CHAT_ID}
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "200k"
-        max-file: "10"
   db:
     build:
       context: .
@@ -30,8 +26,3 @@ services:
       POSTGRES_DB: diplomMaxbonus
     ports:
       - "5432:5432"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "200k"
-        max-file: "10"
