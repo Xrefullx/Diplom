@@ -9,5 +9,6 @@ type AddTask struct {
 	Email       string `json:"email"`
 	CompanyName string `json:"companyname"`
 	StatusId    int `json:"statusId"`
-	BoardId     int `json:"boardId"`
+	BoardId     int
+ `json:"boardId"`
 }
