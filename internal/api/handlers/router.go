@@ -24,7 +24,7 @@ func Router(cfg models.Config) *gin.Engine {
 		gUser.GET("/users", GetAllUsers)
 		gUser.DELETE("/task/:id", DeleteTask)
 		gUser.PUT("/task/:id", UpdateTask)
-		gUser.GET("task/", GetTaskInfo)
+		gUser.GET("task", GetTaskInfo)
 		gUser.GET("task/:id", GetTaskInfoId)
 	}
 	return r
