@@ -165,6 +165,24 @@ func (PS *PgStorage) GetAllStatuses(ctx context.Context) ([]models.Status, error
 	return statuses, nil
 }
 
+func (PS *PgStorage) GetAllReason(ctx context.Context) ([]models.Reason, error) {
+	rows, err := PS.connect.QueryContext(ctx, `SELECT id, "nameReason" FROM public.reason;`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var statuses []models.Reason
+	for rows.Next() {
+		var status models.Reason
+		err := rows.Scan(&status.Id, &status.NameReason)
+		if err != nil {
+			return nil, err
+		}
+		statuses = append(statuses, status)
+	}
+	return statuses, nil
+}
+
 func (PS *PgStorage) GetAllUsers(ctx context.Context) ([]models.Users, error) {
 	rows, err := PS.connect.QueryContext(ctx, `SELECT id, "FIO" FROM public."user";`)
 	if err != nil {
@@ -234,7 +252,7 @@ func (PS *PgStorage) GetTaskInfo(ctx context.Context) ([]models.TaskInfo, error)
 
 func (PS *PgStorage) GetTaskInfoId(ctx context.Context, taskID int64) ([]models.TaskInfo, error) {
 	query := `
-		SELECT public.task.id, public.task.title, "FIO", "nameReason", public.board.title, "nameStatus", icon, phone, email, companyname, problem
+		SELECT public.task.id, public.task.title, "FIO", "nameReason", public.status.id, icon, phone, email, companyname, problem
 		FROM public.task
 		JOIN public."user" ON public."user".id = public.task.userId
 		JOIN public."reason" ON public."reason".id = public.task.reasonid
@@ -251,7 +269,7 @@ func (PS *PgStorage) GetTaskInfoId(ctx context.Context, taskID int64) ([]models.
 	var tasks []models.TaskInfo
 	for rows.Next() {
 		var task models.TaskInfo
-		err := rows.Scan(&task.ID, &task.TaskTitle, &task.FIO, &task.NameReason, &task.BoardTitle, &task.NameStatus, &task.Icon, &task.Phone, &task.Email, &task.CompanyName, &task.Problem)
+		err := rows.Scan(&task.ID, &task.TaskTitle, &task.FIO, &task.NameReason, &task.NameStatus, &task.Icon, &task.Phone, &task.Email, &task.CompanyName, &task.Problem)
 		if err != nil {
 			return nil, err
 		}

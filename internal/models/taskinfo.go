@@ -6,10 +6,10 @@ type TaskInfo struct {
 	FIO         string `json:"fio"`
 	NameReason  string `json:"name_reason"`
 	BoardTitle  string `json:"board_title"`
-	NameStatus  string `json:"name_status"`
+	NameStatus  int64  `json:"id_status"`
 	Icon        string `json:"icon"`
 	Phone       string `json:"phone"`
 	Email       string `json:"email"`
 	CompanyName string `json:"company_name"`
-	Problem     string `json:"problem"`
+	Problem     string `json:"comment"`
 }

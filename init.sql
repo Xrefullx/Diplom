@@ -22,36 +22,36 @@ SET row_security = off;
 
 CREATE FUNCTION public.add_task(s_phone character varying, title character varying, reason_id integer, email character varying, companyname character varying) RETURNS void
     LANGUAGE plpgsql
-    AS $$
-DECLARE
-    phone_error TEXT = 'Номер телефона пустой';
-    title_error TEXT = 'Добавьте описание проблемы';
-    email_error TEXT = 'Добавьте описание email';
-    companyname_error TEXT = 'Добавьте описание название компании';
-BEGIN
-    IF s_phone IS NULL THEN
-		RAISE EXCEPTION USING MESSAGE = phone_error;
-    END IF;
-
-    IF length(s_phone) > 10 THEN
-        RAISE EXCEPTION 'Проверьте номер телефона';
-    END IF;
-
-    IF title IS NULL OR title = ' ' THEN
-        RAISE EXCEPTION USING MESSAGE = title_error;
-    END IF;
-
-    IF email IS NULL OR email = ' ' THEN
-        RAISE EXCEPTION USING MESSAGE = email_error;
-    END IF;
-
-    IF companyname IS NULL OR companyname = ' ' THEN
-        RAISE EXCEPTION USING MESSAGE = companyname_error;
-    END IF;
-
-    INSERT INTO public.task(s_phone, title, reason_id, email, companyname)
-    VALUES (s_phone, title, reason_id, email, companyname);
-END;
+    AS $$
+DECLARE
+    phone_error TEXT = 'Номер телефона пустой';
+    title_error TEXT = 'Добавьте описание проблемы';
+    email_error TEXT = 'Добавьте описание email';
+    companyname_error TEXT = 'Добавьте описание название компании';
+BEGIN
+    IF s_phone IS NULL THEN
+		RAISE EXCEPTION USING MESSAGE = phone_error;
+    END IF;
+
+    IF length(s_phone) > 10 THEN
+        RAISE EXCEPTION 'Проверьте номер телефона';
+    END IF;
+
+    IF title IS NULL OR title = ' ' THEN
+        RAISE EXCEPTION USING MESSAGE = title_error;
+    END IF;
+
+    IF email IS NULL OR email = ' ' THEN
+        RAISE EXCEPTION USING MESSAGE = email_error;
+    END IF;
+
+    IF companyname IS NULL OR companyname = ' ' THEN
+        RAISE EXCEPTION USING MESSAGE = companyname_error;
+    END IF;
+
+    INSERT INTO public.task(s_phone, title, reason_id, email, companyname)
+    VALUES (s_phone, title, reason_id, email, companyname);
+END;
 $$;
 
 
@@ -218,7 +218,13 @@ COPY public.board (id, "userId", title, description) FROM stdin;
 --
 
 COPY public.reason (id, "nameReason") FROM stdin;
-1	test
+1	Не работает лояльность
+2	Проблема с кассой
+3	Проблема с акцией
+4	Не начисляются бонусы
+5	Не предоставляется скидка
+6	Необходимость отчёта
+7	Другое
 \.
 
 
@@ -227,7 +233,10 @@ COPY public.reason (id, "nameReason") FROM stdin;
 --
 
 COPY public.status (id, "nameStatus") FROM stdin;
-1	Test
+1	не обработана
+2	в работе
+3	на проверке
+4	решена
 \.
 
 
@@ -269,6 +278,7 @@ COPY public.task (id, title, userid, reasonid, boardid, statusid, icon, phone, e
 
 COPY public."user" (id, login, password, "FIO") FROM stdin;
 1	pyotr	63f6b4dd210e08712e3c759158bf83f409e2bad47154b30b694d8e8245b82491	Test
+2	Manager	5b735a567f0cc6e62316be35748a7945e4cba158896a2e6ccbddaa2b208ad5fe	Анастасия
 \.
 
 
@@ -283,14 +293,14 @@ SELECT pg_catalog.setval('public.board_id_seq', 1, true);
 -- Name: reason_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.reason_id_seq', 1, true);
+SELECT pg_catalog.setval('public.reason_id_seq', 7, true);
 
 
 --
 -- Name: status_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.status_id_seq', 1, true);
+SELECT pg_catalog.setval('public.status_id_seq', 4, true);
 
 
 --
@@ -304,7 +314,7 @@ SELECT pg_catalog.setval('public.task_id_seq', 27, true);
 -- Name: user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.user_id_seq', 1, true);
+SELECT pg_catalog.setval('public.user_id_seq', 2, true);
 
 
 --

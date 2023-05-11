@@ -14,6 +14,7 @@ type MaxbonusStorage interface {
 	UpdateTaskStatus(ctx context.Context, taskId int64, statusId int64) error
 	GetAllStatuses(ctx context.Context) ([]models.Status, error)
 	GetAllUsers(ctx context.Context) ([]models.Users, error)
+	GetAllReason(ctx context.Context) ([]models.Reason, error)
 	GetTaskInfo(ctx context.Context) ([]models.TaskInfo, error)
 	GetTaskInfoId(ctx context.Context, taskID int64) ([]models.TaskInfo, error)
 	DeleteTask(ctx context.Context, taskId int64) error
