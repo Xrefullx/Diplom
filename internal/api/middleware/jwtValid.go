@@ -21,6 +21,10 @@ func JwtValid() gin.HandlerFunc {
 		if c.Request.URL.Path == "/api/login" {
 			return
 		}
+		if c.Request.Method == "OPTIONS" {
+		c.AbortWithStatus(204)
+		return
+		}
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
 			c.AbortWithStatus(http.StatusUnauthorized)

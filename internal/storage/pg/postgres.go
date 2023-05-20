@@ -226,12 +226,12 @@ func (PS *PgStorage) UpdateTask(ctx context.Context, taskId string, task models.
 
 func (PS *PgStorage) GetTaskInfo(ctx context.Context) ([]models.TaskInfo, error) {
 	query := `
-		SELECT public.task.id, public.task.title, "FIO", "nameReason", public.board.title, "nameStatus", icon, phone, email, companyname, problem
+		SELECT public.task.id, COALESCE(public.task.title, ''), COALESCE("FIO", ''), COALESCE("nameReason", ''), COALESCE(public.board.title, ''), public.status.id, COALESCE(icon, ''), COALESCE(phone, ''), COALESCE(email, ''), COALESCE(companyname, ''), COALESCE(problem, '')
 		FROM public.task
-		JOIN public."user" ON public."user".id = public.task.userId
-		JOIN public."reason" ON public."reason".id = public.task.reasonid
-		JOIN public.board ON public.board.id = public.task.boardid
-		JOIN public.status ON public.status.id = public.task.statusid
+		left JOIN public."user" ON public."user".id = public.task.userId
+		left JOIN public."reason" ON public."reason".id = public.task.reasonid
+		left JOIN public.board ON public.board.id = public.task.boardid
+		left JOIN public.status ON public.status.id = public.task.statusid
 	`
 	rows, err := PS.connect.QueryContext(ctx, query)
 	if err != nil {
