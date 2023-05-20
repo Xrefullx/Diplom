@@ -41,7 +41,7 @@ func AddTask(c *gin.Context) {
 		return
 	}
 	log.Debug("Новая задача добавлена успешно", zap.Any("task", task))
-	c.JSON(http.StatusCreated, gin.H{"id": "5"})
+	c.JSON(http.StatusCreated, gin.H{"id": "%s"})
 	telegramToken := os.Getenv("TELEGRAM_TOKEN")
 	telegramChatIDStr := os.Getenv("CHAT_ID")
 	telegramChatID, err := strconv.ParseInt(telegramChatIDStr, 10, 64)
@@ -49,10 +49,8 @@ func AddTask(c *gin.Context) {
 		fmt.Println("Error converting string to int64:", err)
 		return
 	}
-
 	notificationMessage := fmt.Sprintf("Поступила новая заявка, от компании:  %s.\n"+
 		"Номер телефона: %s\n"+"Email: %s\n"+"Описание проблемы: %s\n", task.CompanyName, task.SPhone, task.Email, task.Problem)
-
 	if err := sendTelegramNotification(telegramToken, telegramChatID, notificationMessage); err != nil {
 		log.Error("Ошибка отправки уведомления в Telegram", zap.Error(err))
 	}
@@ -63,7 +61,6 @@ func sendTelegramNotification(token string, chatID int64, message string) error 
 	if err != nil {
 		return err
 	}
-
 	msg := tgbotapi.NewMessage(chatID, message)
 	_, err = bot.Send(msg)
 	return err

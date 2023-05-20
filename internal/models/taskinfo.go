@@ -12,4 +12,5 @@ type TaskInfo struct {
 	Email       string `json:"email"`
 	CompanyName string `json:"company_name"`
 	Problem     string `json:"comment"`
+	Description string `json:"description"`
 }

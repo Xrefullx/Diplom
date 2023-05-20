@@ -21,7 +21,6 @@ func UpdateTaskStatus(c *gin.Context) {
 		c.String(http.StatusBadRequest, "Некорректный ID задачи")
 		return
 	}
-
 	var updateStatusRequest models.UpdateStatusRequest
 	err = c.BindJSON(&updateStatusRequest)
 	if err != nil {
@@ -39,5 +38,35 @@ func UpdateTaskStatus(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Статус задачи успешно обновлен",
+	})
+}
+
+func UpdateTaskDescription(c *gin.Context) {
+	ctx, cancel := context.WithTimeout(c.Request.Context(), constant.TimeOutRequest)
+	defer cancel()
+
+	taskIdParam := c.Param("id")
+	taskId, err := strconv.ParseInt(taskIdParam, 10, 64)
+	if err != nil {
+		c.String(http.StatusBadRequest, "Некорректный ID задачи")
+		return
+	}
+	var updateStatusRequest models.UpdateDescription
+	err = c.BindJSON(&updateStatusRequest)
+	if err != nil {
+		c.String(http.StatusBadRequest, "Некорректный JSON")
+		return
+	}
+	log := container.GetLog()
+	storage := container.GetStorage()
+	err = storage.UpdateDescription(ctx, taskId, updateStatusRequest.Description)
+	if err != nil {
+		log.Error(constant.ErrorWorkDataBase, zap.Error(err), zap.String("func", "UpdateTaskDescription"))
+		c.String(http.StatusInternalServerError, constant.ErrorWorkDataBase)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Описание задачи успешно обновлено",
 	})
 }

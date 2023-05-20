@@ -27,6 +27,7 @@ func Router(cfg models.Config) *gin.Engine {
 		gUser.GET("task", GetTaskInfo)
 		gUser.GET("task/:id", GetTaskInfoId)
 		gUser.GET("/reason", GetAllReason)
+		gUser.PUT("/description/:id", UpdateTaskDescription)
 	}
 	return r
 }

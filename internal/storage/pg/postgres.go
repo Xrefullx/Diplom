@@ -147,6 +147,11 @@ func (PS *PgStorage) UpdateTaskStatus(ctx context.Context, taskId int64, statusI
 	return err
 }
 
+func (PS *PgStorage) UpdateDescription(ctx context.Context, taskId int64, description string) error {
+	_, err := PS.connect.ExecContext(ctx, `UPDATE task SET description = $1 WHERE id = $2;`, description, taskId)
+	return err
+}
+
 func (PS *PgStorage) GetAllStatuses(ctx context.Context) ([]models.Status, error) {
 	rows, err := PS.connect.QueryContext(ctx, `SELECT id, "nameStatus" FROM public.status;`)
 	if err != nil {
@@ -226,7 +231,8 @@ func (PS *PgStorage) UpdateTask(ctx context.Context, taskId string, task models.
 
 func (PS *PgStorage) GetTaskInfo(ctx context.Context) ([]models.TaskInfo, error) {
 	query := `
-		SELECT public.task.id, COALESCE(public.task.title, ''), COALESCE("FIO", ''), COALESCE("nameReason", ''), COALESCE(public.board.title, ''), public.status.id, COALESCE(icon, ''), COALESCE(phone, ''), COALESCE(email, ''), COALESCE(companyname, ''), COALESCE(problem, '')
+		SELECT public.task.id, COALESCE(public.task.title, ''), COALESCE("FIO", ''), COALESCE("nameReason", ''), COALESCE(public.board.title, ''), 
+		       public.status.id, COALESCE(icon, ''), COALESCE(phone, ''), COALESCE(email, ''), COALESCE(companyname, ''), COALESCE(problem, ''),COALESCE(public.task.description, '')
 		FROM public.task
 		left JOIN public."user" ON public."user".id = public.task.userId
 		left JOIN public."reason" ON public."reason".id = public.task.reasonid
@@ -241,7 +247,8 @@ func (PS *PgStorage) GetTaskInfo(ctx context.Context) ([]models.TaskInfo, error)
 	var tasks []models.TaskInfo
 	for rows.Next() {
 		var task models.TaskInfo
-		err := rows.Scan(&task.ID, &task.TaskTitle, &task.FIO, &task.NameReason, &task.BoardTitle, &task.NameStatus, &task.Icon, &task.Phone, &task.Email, &task.CompanyName, &task.Problem)
+		err := rows.Scan(&task.ID, &task.TaskTitle, &task.FIO, &task.NameReason, &task.BoardTitle, &task.NameStatus,
+			&task.Icon, &task.Phone, &task.Email, &task.CompanyName, &task.Problem, &task.Description)
 		if err != nil {
 			return nil, err
 		}
@@ -252,7 +259,8 @@ func (PS *PgStorage) GetTaskInfo(ctx context.Context) ([]models.TaskInfo, error)
 
 func (PS *PgStorage) GetTaskInfoId(ctx context.Context, taskID int64) ([]models.TaskInfo, error) {
 	query := `
-		SELECT public.task.id, public.task.title, "FIO", "nameReason", public.status.id, icon, phone, email, companyname, problem
+		SELECT public.task.id, COALESCE(public.task.title, ''), COALESCE("FIO", ''), COALESCE("nameReason", ''), COALESCE(public.board.title, ''), public.status.id, COALESCE(icon, ''), 
+		       COALESCE(phone, ''), COALESCE(email, ''), COALESCE(companyname, ''), COALESCE(problem, ''),COALESCE(public.task.description, '')
 		FROM public.task
 		JOIN public."user" ON public."user".id = public.task.userId
 		JOIN public."reason" ON public."reason".id = public.task.reasonid
@@ -269,7 +277,7 @@ func (PS *PgStorage) GetTaskInfoId(ctx context.Context, taskID int64) ([]models.
 	var tasks []models.TaskInfo
 	for rows.Next() {
 		var task models.TaskInfo
-		err := rows.Scan(&task.ID, &task.TaskTitle, &task.FIO, &task.NameReason, &task.NameStatus, &task.Icon, &task.Phone, &task.Email, &task.CompanyName, &task.Problem)
+		err := rows.Scan(&task.ID, &task.TaskTitle, &task.FIO, &task.NameReason, &task.NameStatus, &task.Icon, &task.Phone, &task.Email, &task.CompanyName, &task.Problem, &task.Description)
 		if err != nil {
 			return nil, err
 		}
