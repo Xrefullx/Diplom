@@ -23,7 +23,7 @@ func GetTaskInfoId(c *gin.Context) {
 	storage := container.GetStorage()
 	taskInfo, err := storage.GetTaskInfoId(ctx, id)
 	if err != nil {
-		log.Error(constant.ErrorWorkDataBase, zap.Error(err), zap.String("func", "GetTaskInfo"))
+		log.Error(constant.ErrorWorkDataBase, zap.Error(err), zap.String("func", "GetTaskInfoId"))
 		c.String(http.StatusInternalServerError, constant.ErrorWorkDataBase)
 		return
 	}
