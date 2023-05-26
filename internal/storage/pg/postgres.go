@@ -124,10 +124,14 @@ func (PS *PgStorage) Authentication(ctx context.Context, user models.User) (bool
 	return true, nil
 }
 
-func (PS *PgStorage) AddTask(ctx context.Context, task models.AddTask) error {
-	_, err := PS.connect.ExecContext(ctx, `INSERT INTO public.task(phone, title, reasonId ,email, companyname,statusId,boardId,problem) VALUES ($1, $2, $3,$4,$5,$6,$7,$8 )`,
-		task.SPhone, task.Title, task.ReasonID, task.Email, task.CompanyName, task.BoardId, task.StatusId, task.Problem)
-	return err
+func (PS *PgStorage) AddTask(ctx context.Context, task models.AddTask) (int64, error) {
+    var id int64
+    err := PS.connect.QueryRowContext(ctx, `INSERT INTO public.task(phone, title, reasonId, email, companyname, statusId, boardId, problem) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`,
+	task.SPhone, task.Title, task.ReasonID, task.Email, task.CompanyName, task.BoardId, task.StatusId, task.Problem).Scan(&id)
+    if err != nil {
+	return 0, err
+    }
+    return id, nil
 }
 
 func (PS *PgStorage) StatusTask(ctx context.Context, id int64) (models.Status, error) {
@@ -262,10 +266,10 @@ func (PS *PgStorage) GetTaskInfoId(ctx context.Context, taskID int64) ([]models.
 		SELECT public.task.id, COALESCE(public.task.title, ''), COALESCE("FIO", ''), COALESCE("nameReason", ''), COALESCE(public.board.title, ''), public.status.id, COALESCE(icon, ''), 
 		       COALESCE(phone, ''), COALESCE(email, ''), COALESCE(companyname, ''), COALESCE(problem, ''),COALESCE(public.task.description, '')
 		FROM public.task
-		JOIN public."user" ON public."user".id = public.task.userId
-		JOIN public."reason" ON public."reason".id = public.task.reasonid
-		JOIN public.board ON public.board.id = public.task.boardid
-		JOIN public.status ON public.status.id = public.task.statusid
+		left  JOIN public."user" ON public."user".id = public.task.userId
+		left JOIN public."reason" ON public."reason".id = public.task.reasonid
+		left JOIN public.board ON public.board.id = public.task.boardid
+		left JOIN public.status ON public.status.id = public.task.statusid
 		WHERE public.task.id = $1
 	`
 	rows, err := PS.connect.QueryContext(ctx, query, taskID)
@@ -277,7 +281,7 @@ func (PS *PgStorage) GetTaskInfoId(ctx context.Context, taskID int64) ([]models.
 	var tasks []models.TaskInfo
 	for rows.Next() {
 		var task models.TaskInfo
-		err := rows.Scan(&task.ID, &task.TaskTitle, &task.FIO, &task.NameReason, &task.NameStatus, &task.Icon, &task.Phone, &task.Email, &task.CompanyName, &task.Problem, &task.Description)
+		err := rows.Scan(&task.ID, &task.TaskTitle, &task.FIO, &task.NameReason,&task.BoardTitle ,&task.NameStatus, &task.Icon, &task.Phone, &task.Email, &task.CompanyName, &task.Problem, &task.Description)
 		if err != nil {
 			return nil, err
 		}
