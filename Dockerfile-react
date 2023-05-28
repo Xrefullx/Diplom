@@ -1,0 +1,24 @@
+# Берем официальный образ Node.js
+FROM node:16
+
+# Устанавливаем рабочую директорию
+WORKDIR /app
+
+# Копируем package.json и yarn.lock (если есть) в рабочую директорию
+COPY client/package.json ./
+COPY client/yarn.lock ./
+
+# Устанавливаем зависимости
+RUN yarn install
+
+# Копируем исходный код в рабочую директорию
+COPY client/ ./
+
+# Собираем приложение
+RUN yarn build
+
+# Устанавливаем serve глобально
+RUN yarn global add serve
+
+# Запускаем приложение
+CMD ["serve", "-s", "build"]

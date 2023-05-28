@@ -35,3 +35,14 @@ services:
       options:
         max-size: "200k"
         max-file: "10"
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile-react
+    ports:
+      - "3000:3000"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
