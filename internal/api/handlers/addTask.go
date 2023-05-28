@@ -34,14 +34,14 @@ func AddTask(c *gin.Context) {
 	log.Debug("Добавление новой задачи", zap.Any("task", task))
 	task.StatusId = 1
 	task.BoardId = 1
-	err = storage.AddTask(ctx, task)
+	id, err := storage.AddTask(ctx, task)
 	if err != nil {
 		log.Error(constant.ErrorWorkDataBase, zap.Error(err), zap.String("func", "AddTask"))
 		c.String(http.StatusInternalServerError, constant.ErrorWorkDataBase)
 		return
 	}
-	log.Debug("Новая задача добавлена успешно", zap.Any("task", task))
-	c.JSON(http.StatusCreated, gin.H{"id": "%s"})
+	log.Debug("Новая задача добавлена успешно", zap.Any("task", task), zap.Int64("id", id))
+	c.JSON(http.StatusCreated, gin.H{"id": id})
 	telegramToken := os.Getenv("TELEGRAM_TOKEN")
 	telegramChatIDStr := os.Getenv("CHAT_ID")
 	telegramChatID, err := strconv.ParseInt(telegramChatIDStr, 10, 64)

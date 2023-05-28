@@ -124,10 +124,14 @@ func (PS *PgStorage) Authentication(ctx context.Context, user models.User) (bool
 	return true, nil
 }
 
-func (PS *PgStorage) AddTask(ctx context.Context, task models.AddTask) error {
-	_, err := PS.connect.ExecContext(ctx, `INSERT INTO public.task(phone, title, reasonId ,email, companyname,statusId,boardId,problem) VALUES ($1, $2, $3,$4,$5,$6,$7,$8 )`,
-		task.SPhone, task.Title, task.ReasonID, task.Email, task.CompanyName, task.BoardId, task.StatusId, task.Problem)
-	return err
+func (PS *PgStorage) AddTask(ctx context.Context, task models.AddTask) (int64, error) {
+	var id int64
+	err := PS.connect.QueryRowContext(ctx, `INSERT INTO public.task(phone, title, reasonId, email, companyname, statusId, boardId, problem) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`,
+		task.SPhone, task.Title, task.ReasonID, task.Email, task.CompanyName, task.BoardId, task.StatusId, task.Problem).Scan(&id)
+	if err != nil {
+		return 0, err
+	}
+	return id, nil
 }
 
 func (PS *PgStorage) StatusTask(ctx context.Context, id int64) (models.Status, error) {
