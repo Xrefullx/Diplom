@@ -9,7 +9,11 @@ type MaxbonusStorage interface {
 	Ping() error
 	Close() error
 	Authentication(ctx context.Context, user models.User) (bool, error)
+<<<<<<< HEAD
 	AddTask(ctx context.Context, user models.AddTask) (int64,error)
+=======
+	AddTask(ctx context.Context, user models.AddTask) (int64, error)
+>>>>>>> bb744b3982bbe8760852be63e9d21e40311bb492
 	StatusTask(ctx context.Context, id int64) (models.Status, error)
 	UpdateTaskStatus(ctx context.Context, taskId int64, statusId int64) error
 	UpdateDescription(ctx context.Context, taskId int64, description string) error
