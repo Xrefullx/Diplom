@@ -125,13 +125,14 @@ func (PS *PgStorage) Authentication(ctx context.Context, user models.User) (bool
 }
 
 func (PS *PgStorage) AddTask(ctx context.Context, task models.AddTask) (int64, error) {
-    var id int64
-    err := PS.connect.QueryRowContext(ctx, `INSERT INTO public.task(phone, title, reasonId, email, companyname, statusId, boardId, problem) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`,
-	task.SPhone, task.Title, task.ReasonID, task.Email, task.CompanyName, task.BoardId, task.StatusId, task.Problem).Scan(&id)
-    if err != nil {
-	return 0, err
-    }
-    return id, nil
+	var id int64
+	err := PS.connect.QueryRowContext(ctx, `INSERT INTO public.task(phone, title, reasonId, email, companyname, statusId, boardId, problem,description) 
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8,$9) RETURNING id`,
+		task.SPhone, task.Title, task.ReasonID, task.Email, task.CompanyName, task.BoardId, task.StatusId, task.Problem, task.Discription).Scan(&id)
+	if err != nil {
+		return 0, err
+	}
+	return id, nil
 }
 
 func (PS *PgStorage) StatusTask(ctx context.Context, id int64) (models.Status, error) {
@@ -281,7 +282,7 @@ func (PS *PgStorage) GetTaskInfoId(ctx context.Context, taskID int64) ([]models.
 	var tasks []models.TaskInfo
 	for rows.Next() {
 		var task models.TaskInfo
-		err := rows.Scan(&task.ID, &task.TaskTitle, &task.FIO, &task.NameReason,&task.BoardTitle ,&task.NameStatus, &task.Icon, &task.Phone, &task.Email, &task.CompanyName, &task.Problem, &task.Description)
+		err := rows.Scan(&task.ID, &task.TaskTitle, &task.FIO, &task.NameReason, &task.BoardTitle, &task.NameStatus, &task.Icon, &task.Phone, &task.Email, &task.CompanyName, &task.Problem, &task.Description)
 		if err != nil {
 			return nil, err
 		}
