@@ -1,0 +1,65 @@
+.contacts {
+  width: auto;
+
+  & > div {
+    display: flex;
+    flex-direction: column;
+
+    & > div {
+      margin: 5px 0;
+      border: none;
+
+      display: flex;
+      flex-direction: row;
+
+      width: auto;
+      text-decoration: none;
+
+      svg {
+        margin: 5px;
+        min-width: 25px;
+        min-height: 25px;
+        color: black;
+      }
+
+      a {
+        width: auto;
+
+        height: 100%;
+        margin: auto;
+        margin-left: 5px;
+        text-decoration: none;
+        color: black;
+      }
+
+    }
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .contacts {
+    margin-top: 30px;
+
+    h1 {
+      font-size: 2em;
+    }
+  }
+}
+
+@media screen and (max-width: 800px) and (min-width: 576px) {
+
+}
+
+@media screen and (max-width: 576px) {
+  .contacts {
+    margin-top: 30px;
+
+    h1 {
+      font-size: 1.2em;
+    }
+
+    & > div {
+
+    }
+  }
+}

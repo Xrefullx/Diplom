@@ -1,0 +1,43 @@
+.faq {
+  & > div {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .faq {
+    margin-top: 50px;
+
+    h1 {
+      font-size: 2em;
+    }
+
+    div {
+      & > * {
+        margin: 10px 0;
+      }
+    }
+
+  }
+}
+
+@media screen and (max-width: 800px) and (min-width: 576px) {
+}
+
+@media screen and (max-width: 576px) {
+  .faq {
+    margin-top: 50px;
+
+    h1 {
+      font-size: 1.2em;
+    }
+
+    div {
+      & > * {
+        margin: 5px 0;
+      }
+    }
+  }
+
+}

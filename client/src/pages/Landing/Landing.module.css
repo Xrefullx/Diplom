@@ -1,0 +1,22 @@
+.landing {
+  max-width: 800px;
+  margin: auto;
+  background-color: white;
+  box-shadow: 0 0 30px 30px rgb(255, 255, 255);
+}
+
+@media screen and (min-width: 800px) {
+  .landing {
+    margin-top: 100px;
+    margin-bottom: 100px;
+  }
+}
+@media screen and (max-width: 576px) {
+  .landing {
+    padding: 0 10px;
+    margin-top: 100px;
+    margin-bottom: 100px;
+  }
+}
+
+/*# sourceMappingURL=Landing.module.css.map */

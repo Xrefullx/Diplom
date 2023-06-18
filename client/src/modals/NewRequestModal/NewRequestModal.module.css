@@ -1,0 +1,51 @@
+.newRequestModal {
+  background-color: white;
+  border-radius: 10px;
+  text-align: center;
+}
+.newRequestModal header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.newRequestModal header .closeButton {
+  cursor: pointer;
+}
+.newRequestModal .loadingCircular {
+  margin: auto;
+}
+.newRequestModal .textBlock {
+  text-align: left;
+}
+
+@media screen and (min-width: 800px) {
+  .newRequestModal {
+    padding: 10px;
+  }
+  .newRequestModal header {
+    margin-bottom: 10px;
+  }
+  .newRequestModal header h2 {
+    font-size: 1.3em;
+  }
+  .newRequestModal header .closeButton {
+    margin-left: 20px;
+    min-height: 15px;
+    min-width: 15px;
+  }
+}
+@media screen and (max-width: 576px) {
+  .newRequestModal {
+    padding: 10px;
+  }
+  .newRequestModal header h2 {
+    font-size: 1.1em;
+  }
+  .newRequestModal header .closeButton {
+    min-height: 25px;
+    min-width: 25px;
+  }
+}
+
+/*# sourceMappingURL=NewRequestModal.module.css.map */

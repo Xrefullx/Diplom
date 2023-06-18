@@ -1,0 +1,56 @@
+.shortInfo {
+  display: grid;
+  grid-template: "h1 img" "btn img";
+}
+.shortInfo h1 {
+  grid-area: h1;
+}
+.shortInfo button {
+  grid-area: btn;
+  place-self: start;
+  background-color: #E47A3D;
+  color: white;
+  border-radius: 10px;
+}
+.shortInfo img {
+  grid-area: img;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.57);
+  border-radius: 20px;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+@media screen and (min-width: 800px) {
+  .shortInfo {
+    max-width: 800px;
+  }
+  .shortInfo h1 {
+    font-size: 2.2em;
+  }
+  .shortInfo button {
+    font-size: 1.5em;
+    padding: 10px;
+  }
+}
+@media screen and (max-width: 800px) and (min-width: 576px) {
+  .shortInfo h1 {
+    font-size: 1.5em;
+  }
+}
+@media screen and (max-width: 576px) {
+  .shortInfo {
+    margin-top: 10px;
+  }
+  .shortInfo h1 {
+    font-size: 1.3em;
+  }
+  .shortInfo button {
+    padding: 8px;
+    font-size: 4vw;
+  }
+  .shortInfo img {
+    max-width: 100px;
+  }
+}
+
+/*# sourceMappingURL=ShortInfo.module.css.map */

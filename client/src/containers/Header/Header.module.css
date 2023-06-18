@@ -1,0 +1,119 @@
+.header {
+  text-align: center;
+  position: fixed;
+  top: 0;
+  z-index: 2;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+.header .headerContainer .logo img {
+  height: 50px;
+  width: 50px;
+}
+.header .headerContainer nav a {
+  text-decoration: none;
+  color: black;
+}
+.header .headerContainer nav button {
+  color: #E47A3D;
+}
+.header .headerContainer nav .checkStatusModal {
+  padding: 10px;
+  border: 1px solid #E47A3D;
+}
+.header .headerContainer .serviceButton {
+  width: 50px;
+  height: 50px;
+}
+.header .headerContainer .serviceButton div {
+  transition: ease 0.5s;
+  color: #E47A3D;
+}
+
+@media screen and (min-width: 800px) {
+  .header .headerContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: auto;
+    padding: 0 40px;
+    max-width: 1024px;
+    width: 100%;
+  }
+  .header .headerContainer .logo {
+    display: block;
+  }
+  .header .headerContainer .logo img {
+    height: 50px;
+    width: 50px;
+  }
+  .header .headerContainer nav {
+    display: inline-flex;
+  }
+  .header .headerContainer nav > * {
+    margin: auto 10px;
+  }
+  .header .headerContainer nav .checkStatusModal {
+    padding: 10px;
+  }
+  .header .headerContainer .serviceButton {
+    display: none;
+  }
+}
+@media screen and (max-width: 800px) {
+  header .headerContainer .serviceButton {
+    display: block;
+  }
+  header .headerContainer .serviceButton div {
+    height: 3px;
+    width: 25px;
+    background-color: #E47A3D;
+  }
+  .collapsed .headerContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .collapsed .headerContainer nav {
+    display: none;
+  }
+  .collapsed .headerContainer .serviceButton div {
+    margin: 5px auto;
+  }
+  .uncollapsed {
+    height: 100vh;
+    text-align: left;
+    background-color: rgba(0, 0, 0, 0.45);
+  }
+  .uncollapsed .headerContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    background-color: white;
+    height: auto;
+    width: auto;
+    min-width: 35%;
+  }
+  .uncollapsed .headerContainer .logo {
+    display: none;
+  }
+  .uncollapsed .headerContainer nav {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .uncollapsed .headerContainer nav > * {
+    margin: 10px auto;
+  }
+  .uncollapsed .headerContainer .serviceButton {
+    display: none;
+  }
+}
+@media screen and (max-width: 576px) {
+  .header .headerContainer nav, .header .headerContainer button {
+    font-size: 1.1em;
+  }
+}
+
+/*# sourceMappingURL=Header.module.css.map */

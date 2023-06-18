@@ -1,0 +1,52 @@
+.checkStatusModal {
+  background-color: white;
+  border-radius: 10px;
+  text-align: center;
+}
+.checkStatusModal header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.checkStatusModal header .closeButton {
+  cursor: pointer;
+}
+.checkStatusModal .loadingCircular {
+  margin: auto;
+}
+.checkStatusModal .textBlock {
+  text-align: left;
+}
+
+@media screen and (min-width: 800px) {
+  .checkStatusModal {
+    min-width: 300px;
+    padding: 10px;
+  }
+  .checkStatusModal header {
+    margin-bottom: 10px;
+  }
+  .checkStatusModal header h2 {
+    font-size: 1.3em;
+  }
+  .checkStatusModal header .closeButton {
+    min-height: 15px;
+    min-width: 15px;
+  }
+}
+@media screen and (max-width: 576px) {
+  .checkStatusModal {
+    padding: 10px;
+  }
+  .checkStatusModal header h2 {
+    font-size: 1.1em;
+  }
+  .checkStatusModal header .closeButton {
+    margin-left: 15px;
+    min-height: 25px;
+    min-width: 25px;
+  }
+}
+
+/*# sourceMappingURL=CheckStatusModal.module.css.map */

@@ -1,0 +1,66 @@
+.newRequestModal {
+  background-color: white;
+  border-radius: 10px;
+  text-align: center;
+
+  header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    .closeButton {
+      cursor: pointer;
+    }
+  }
+
+  .loadingCircular {
+    margin: auto;
+  }
+
+  .textBlock {
+    text-align: left;
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .newRequestModal {
+    padding: 10px;
+    header {
+      margin-bottom: 10px;
+
+      h2 {
+        font-size: 1.3em;
+      }
+
+      .closeButton {
+        margin-left: 20px;
+
+        min-height: 15px;
+        min-width: 15px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 800px) and (min-width: 576px) {
+
+}
+
+@media screen and (max-width: 576px) {
+  .newRequestModal {
+    padding: 10px;
+
+    header {
+      h2 {
+        font-size: 1.1em;
+      }
+
+      .closeButton {
+
+        min-height: 25px;
+        min-width: 25px;
+      }
+    }
+  }
+}

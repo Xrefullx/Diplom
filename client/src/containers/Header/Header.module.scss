@@ -1,0 +1,169 @@
+.header {
+  text-align: center;
+  position: fixed;
+  top: 0;
+  z-index: 2;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.22);
+
+  .headerContainer {
+    .logo {
+      img {
+        height: 50px;
+        width: 50px;
+      }
+    }
+
+    nav {
+
+      a {
+        text-decoration: none;
+        color: black;
+      }
+
+      button {
+        color: #E47A3D;
+      }
+
+      .checkStatusModal {
+        padding: 10px;
+        border: 1px solid #E47A3D;
+      }
+    }
+
+    .serviceButton {
+      width: 50px;
+      height: 50px;
+
+      div {
+        transition: ease 0.5s;
+        color: #E47A3D;
+      }
+    }
+  }
+}
+
+
+@media screen and (min-width: 800px) {
+  .header {
+    .headerContainer {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      margin: auto;
+      padding: 0 40px;
+
+      max-width: 1024px;
+      width: 100%;
+
+
+      .logo {
+        display: block;
+
+        img {
+          height: 50px;
+          width: 50px;
+        }
+      }
+
+      nav {
+        display: inline-flex;
+
+        & > * {
+          margin: auto 10px;
+        }
+
+        .checkStatusModal {
+          padding: 10px;
+        }
+      }
+
+      .serviceButton {
+        display: none;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 800px) {
+  header {
+    .headerContainer {
+      .serviceButton {
+        display: block;
+
+        div {
+          height: 3px;
+          width: 25px;
+          background-color: #E47A3D;
+        }
+      }
+    }
+  }
+
+  .collapsed {
+    .headerContainer {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      nav {
+        display: none;
+      }
+
+      .serviceButton {
+        div {
+          margin: 5px auto;
+        }
+      }
+    }
+  }
+
+  .uncollapsed {
+    height: 100vh;
+    text-align: left;
+    background-color: rgba(0, 0, 0, 0.45);
+
+    .headerContainer {
+      display: flex;
+      flex-direction: column;
+
+      padding: 0;
+      background-color: white;
+
+      height: auto;
+      width: auto;
+      min-width: 35%;
+
+      .logo {
+        display: none;
+      }
+
+      nav {
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: flex-start;
+
+        & > * {
+          margin: 10px auto;
+        }
+      }
+
+      .serviceButton {
+        display: none;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .header {
+    .headerContainer {
+      nav, button {
+        font-size: 1.1em;
+      }
+    }
+  }
+}
+

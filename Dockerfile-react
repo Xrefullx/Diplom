@@ -6,19 +6,19 @@ WORKDIR /app
 
 # Копируем package.json и yarn.lock (если есть) в рабочую директорию
 COPY client/package.json ./
-COPY client/yarn.lock ./
+COPY client/package-lock.json ./
 
 # Устанавливаем зависимости
-RUN yarn install
+RUN npm install
 
 # Копируем исходный код в рабочую директорию
 COPY client/ ./
 
 # Собираем приложение
-RUN yarn build
+RUN npm build
 
 # Устанавливаем serve глобально
-RUN yarn global add serve
+RUN npm global add serve
 
 # Запускаем приложение
 CMD ["serve", "-s", "build"]
