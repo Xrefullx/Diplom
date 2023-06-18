@@ -22,8 +22,8 @@ export const sendNewRequest = createAsyncThunk(
                title,
                reasonId,
                email,
-               companyName,
                description,
+               companyName
            }) => {
         const response = await axios.post(
             'https://help-maxbonus.ru/api/task/add', {
@@ -31,8 +31,8 @@ export const sendNewRequest = createAsyncThunk(
                 title: title,
                 reasonId: +reasonId,
                 email: email,
-                companyName: companyName,
-                description: description
+                description: description,
+                companyName: companyName
             })
 
         return response.data.id;

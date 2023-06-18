@@ -34,7 +34,7 @@ export function NewRequestForm() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
+    
         if (
             !phone
             || !title
@@ -45,9 +45,14 @@ export function NewRequestForm() {
         ) {
             return;
         }
-
+    
         dispatch(sendNewRequest({
-            phone: phone, title: title, reasonId: reasonId, email: email, companyName: companyName,
+            phone: phone, 
+            title: title, 
+            reasonId: reasonId, 
+            email: email, 
+            companyName: companyName,
+            description: description // добавьте это
         }))
     }
 
@@ -63,7 +68,7 @@ export function NewRequestForm() {
     )
         hasEmptyFields = true;
 
-        const textAreaRef = useRef(null);
+            const textAreaRef = useRef(null);
 
         useEffect(() => {
             if (textAreaRef.current) {
