@@ -116,15 +116,13 @@ export function NewRequestForm() {
                 })}
             </select>
             <textarea
-                name='description'
-                placeholder={`Описание проблемы\n[Необязательно]`}
+                type='text'
+                style={!description ? {border: '2px solid #ff6464', height: '80px'} : null}
+                placeholder={`* Описание проблемы`}
                 onChange={(event) => {
                     setDescription(event.target.value);
                 }}
                 value={description}
-                style={{
-                    height: '100px',
-                }}
             />
             <input
                 type='text'
