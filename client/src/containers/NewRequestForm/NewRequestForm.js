@@ -1,5 +1,5 @@
 import {useDispatch} from "react-redux";
-import {useState} from "react";
+import {useState, useEffect, useRef} from "react";
 
 import {sendNewRequest} from '../../redux/slices/requestSlice'
 
@@ -63,6 +63,14 @@ export function NewRequestForm() {
     )
         hasEmptyFields = true;
 
+        const textAreaRef = useRef(null);
+
+        useEffect(() => {
+            if (textAreaRef.current) {
+                textAreaRef.current.style.height = 'auto';
+                textAreaRef.current.style.height = textAreaRef.current.scrollHeight + 'px';
+            }
+        }, [description]);
 
     return (
         <form className={styles.form}>
@@ -116,6 +124,7 @@ export function NewRequestForm() {
                 })}
             </select>
             <textarea
+                ref={textAreaRef}
                 type='text'
                 style={!description ? {border: '2px solid #ff6464', height: '80px'} : null}
                 placeholder={`* Описание проблемы`}
